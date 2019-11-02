@@ -1,0 +1,65 @@
+<?php
+
+/*
+
+	Author:    https://github.com/AlexeyZ7
+	Name:      php-img2ascii-cli (i2asc)
+	Version:   0.9
+	Last edit: 02.11.2019
+
+	Usage:
+		$ php i2a image=file.png x=X y=Y > output.txt
+	Additional arguments:
+		inversion=yes contrast=1234 brightness=123 newline="\\n" depth="\ .,%#"
+
+*/
+
+
+
+if ( !require 'img2ascii.php' )
+{
+	return false;
+}
+
+for( $i = 1, $cc = []; $i < count($argv); $i++ )
+{
+	list($n, $v) = @explode('=', @$argv[$i] );
+	$cc[strtolower($n)] = $v;
+}
+
+// Analyze and configure options
+
+if( !$cc['image'] )
+{
+	exit("Picture file is empty. Use \"image=\" option. \n");
+} else {
+
+	$ascii_art = new img2ascii;
+	if( @$cc['brightness'] )
+		$ascii_art->brightness = (int) $cc['brightness'];
+	if( @$cc['inversion'] )
+		$ascii_art->inversion = true;
+	if( @$cc['contrast'] )
+		$ascii_art->contrast = (int) $cc['contrast'];
+	if( @$cc['newline'] )
+		$ascii_art->newline = $cc['newline'];
+	if( @$cc['depth'] )
+		$ascii_art->depth = $cc['depth'];
+	if( @$cc['x'] )
+		$ascii_art->reso_x = (int) $cc['x'];
+	if( @$cc['y'] )
+		$ascii_art->reso_y = (int) $cc['y'];
+}
+
+// Generate ASCII-art
+
+$binary = @file_get_contents($cc['image']);
+
+if( !$binary ) {
+	exit("Picture not exists or not readable. Please check permissions or file name. \n");
+} else {
+	$sourceGD = imagecreatefromstring($binary);
+}
+
+exit( $ascii_art->draw($sourceGD) );
+

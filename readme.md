@@ -107,12 +107,13 @@ cause a program error.
 - The library may not recognize transparent pixels correctly. In some
 Inversion helps (see the "Optional Arguments" section)
 
-## What are you planning to add:
+## What me planning to add:
 - Automatic solution to the problem of "elongation"
 - Arguments console and out
 - Support for transparency
 - Full installation in the system
 - Support for colored characters (?)
 - The optimal value of depth
+- Optimization
  
  **Email of the author:** alekseig399@gmail.com
